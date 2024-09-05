@@ -11,3 +11,68 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin: auto 2rem;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+}
+
+.header {
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+}
+
+.header-cell {
+  padding: 0.5rem;
+}
+
+.cell {
+  padding: 0.5rem;
+  text-align: left;
+  width: 10rem;
+  text-wrap: nowrap;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding-left: 16px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background-color: transparent;
+  padding: 8px;
+  height: 39px;
+}
+
+button.selected {
+  background-color: #78a1fa;
+  margin: 0;
+}
+
+.component-item {
+  border: 1px solid #000;
+  padding: 0.5rem;
+}
