@@ -51,4 +51,4 @@ export function addBigData(categories, components) {
   }
 }
 
-addBigData(30, 10000000);
+addBigData(300, 100000);

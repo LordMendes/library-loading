@@ -9,17 +9,16 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
 
   const libraryMap = useMemo(() => {
-    const map = {};
+    const libraryMap = {};
+    library.Categories.forEach((category) => {
+      libraryMap[category] = [];
+    });
     library.Components.forEach((component) => {
       component.Categories.forEach((category) => {
-        if (map[category]) {
-          map[category].push(component.Name);
-        } else {
-          map[category] = [component.Name];
-        }
+        libraryMap[category].push(component.Name);
       });
     });
-    return map;
+    return libraryMap;
   }, []);
 
   const handleSearch = (e) => {
@@ -52,31 +51,35 @@ function App() {
           <h2 className="header-cell">Categories</h2>
           <h2 className="header-cell">Components</h2>
         </div>
-        {Object.keys(filteredComponents).map((category) => (
-          <div className="row" key={category}>
-            <button
-              className={`cell ${
-                selectedCategory === category ? "selected" : ""
-              }`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category} ({filteredComponents[category]?.length || 0})
-            </button>
-            <div className="list">
-              {selectedCategory === category ? (
-                <VirtualList
-                  items={filteredComponents[category]}
-                  itemWidth={150}
-                  containerWidth={window.innerWidth - 250}
-                  overflow="x"
-                  renderItem={(item, index) => (
-                    <ComponentItem>{item}</ComponentItem>
-                  )}
-                />
-              ) : null}
+        <VirtualList
+          items={Object.keys(filteredComponents)}
+          itemHeight={39}
+          containerHeight={window.innerHeight - 250}
+          overflow="y"
+          renderItem={(category) => (
+            <div className="row" key={category}>
+              <button
+                className={`cell ${
+                  selectedCategory === category ? "selected" : ""
+                }`}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category} ({filteredComponents[category]?.length || 0})
+              </button>
+              <div>
+                {selectedCategory === category ? (
+                  <VirtualList
+                    items={filteredComponents[category]}
+                    itemWidth={150}
+                    containerWidth={window.innerWidth - 250}
+                    overflow="x"
+                    renderItem={(item) => <ComponentItem>{item}</ComponentItem>}
+                  />
+                ) : null}
+              </div>
             </div>
-          </div>
-        ))}
+          )}
+        />
       </div>
     </div>
   );

@@ -1,32 +1,26 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 export const VirtualList = ({
   items,
   itemHeight,
   itemWidth,
-  containerHeight,
-  containerWidth,
+  containerHeight = "50px",
+  containerWidth = `${window.innerWidth - 50}px`,
   overflow = "y",
-  renderItem, // Add renderItem prop
+  renderItem,
 }) => {
   const [scrollPos, setScrollPos] = useState(0);
   const containerRef = useRef(null);
 
   const isHorizontal = overflow === "x";
-
   const totalItems = items.length;
-  const totalSize = totalItems * (isHorizontal ? itemWidth : itemHeight);
+  const itemSize = isHorizontal ? itemWidth : itemHeight;
+  const containerSize = isHorizontal ? containerWidth : containerHeight;
+  const totalSize = totalItems * itemSize;
 
-  const visibleCount = Math.ceil(
-    (isHorizontal ? containerWidth : containerHeight) /
-      (isHorizontal ? itemWidth : itemHeight)
-  );
-
-  const startIndex = Math.floor(
-    scrollPos / (isHorizontal ? itemWidth : itemHeight)
-  );
-
-  const endIndex = Math.min(totalItems - 1, startIndex + visibleCount + 1); // extra one for smooth scroll
+  const visibleCount = Math.ceil(containerSize / itemSize);
+  const startIndex = Math.floor(scrollPos / itemSize);
+  const endIndex = Math.min(totalItems - 1, startIndex + visibleCount + 1);
 
   const visibleItems = items.slice(startIndex, endIndex + 1);
 
@@ -40,14 +34,30 @@ export const VirtualList = ({
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setScrollPos(
+        isHorizontal
+          ? containerRef.current.scrollLeft
+          : containerRef.current.scrollTop
+      );
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isHorizontal]);
+
   return (
     <div
       ref={containerRef}
       style={{
-        height: `${containerHeight || 55}px`,
-        width: `${containerWidth || 600}px`,
-        overflowY: isHorizontal ? "hidden" : "auto",
+        height: containerHeight,
+        width: containerWidth,
         overflowX: isHorizontal ? "auto" : "hidden",
+        overflowY: isHorizontal ? "hidden" : "auto",
+        position: "relative",
       }}
       onScroll={handleScroll}
     >
@@ -55,6 +65,7 @@ export const VirtualList = ({
         style={{
           height: isHorizontal ? "100%" : `${totalSize}px`,
           width: isHorizontal ? `${totalSize}px` : "100%",
+          display: isHorizontal ? "flex" : "block",
           position: "relative",
         }}
       >
@@ -73,7 +84,7 @@ export const VirtualList = ({
               width: isHorizontal ? `${itemWidth}px` : "100%",
             }}
           >
-            {renderItem(item, startIndex + index)} {/* Use renderItem to render each item */}
+            {renderItem(item, startIndex + index)}
           </div>
         ))}
       </div>
