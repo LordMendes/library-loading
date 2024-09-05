@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
-import { ComponentItem } from "./componentContainer";
 
 export const VirtualList = ({
   items,
   itemHeight,
   itemWidth,
-  containerHeight ,
+  containerHeight,
   containerWidth,
   overflow = "y",
+  renderItem, // Add renderItem prop
 }) => {
   const [scrollPos, setScrollPos] = useState(0);
   const containerRef = useRef(null);
@@ -15,7 +15,6 @@ export const VirtualList = ({
   const isHorizontal = overflow === "x";
 
   const totalItems = items.length;
-
   const totalSize = totalItems * (isHorizontal ? itemWidth : itemHeight);
 
   const visibleCount = Math.ceil(
@@ -29,11 +28,10 @@ export const VirtualList = ({
 
   const endIndex = Math.min(totalItems - 1, startIndex + visibleCount + 1); // extra one for smooth scroll
 
-  
   const visibleItems = items.slice(startIndex, endIndex + 1);
-  
+
   const handleScroll = () => {
-  if (containerRef.current) {
+    if (containerRef.current) {
       setScrollPos(
         isHorizontal
           ? containerRef.current.scrollLeft
@@ -41,7 +39,7 @@ export const VirtualList = ({
       );
     }
   };
-  
+
   return (
     <div
       ref={containerRef}
@@ -62,9 +60,8 @@ export const VirtualList = ({
       >
         {visibleItems.map((item, index) => (
           <div
-          className="list"
             key={startIndex + index}
-            style={{              
+            style={{
               position: "absolute",
               top: isHorizontal
                 ? "0"
@@ -76,7 +73,7 @@ export const VirtualList = ({
               width: isHorizontal ? `${itemWidth}px` : "100%",
             }}
           >
-            <ComponentItem>{item}</ComponentItem>
+            {renderItem(item, startIndex + index)} {/* Use renderItem to render each item */}
           </div>
         ))}
       </div>

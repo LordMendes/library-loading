@@ -1,12 +1,13 @@
 import "./App.css";
 import { library } from "./data";
 import { VirtualList } from "./components/VirtualList";
+import { ComponentItem } from "./components/ComponentItem";
 import { useState, useMemo } from "react";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-  
+
   const libraryMap = useMemo(() => {
     const map = {};
     library.Components.forEach((component) => {
@@ -68,6 +69,9 @@ function App() {
                   itemWidth={150}
                   containerWidth={window.innerWidth - 250}
                   overflow="x"
+                  renderItem={(item, index) => (
+                    <ComponentItem>{item}</ComponentItem>
+                  )}
                 />
               ) : null}
             </div>
