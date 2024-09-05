@@ -27,9 +27,10 @@ code {
 }
 
 .row {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  height: 50px;
 }
 
 .header {
@@ -37,16 +38,20 @@ code {
   position: sticky;
   top: 0;
   background-color: #fff;
+  height: 100%;
 }
 
 .header-cell {
-  padding: 0.5rem;
+  text-align: left;
+  width: 10rem;
 }
 
 .cell {
   text-align: left;
   width: 10rem;
-  text-wrap: nowrap;
+  min-width: 10rem;
+  max-width: 10rem;
+  white-space: nowrap;
 }
 
 
@@ -57,7 +62,6 @@ button {
   border: none;
   background-color: transparent;
   padding: 8px;
-  height: 39px;
 }
 
 button.selected {
@@ -71,6 +75,26 @@ button.selected {
   align-items: center;
   border: 1px solid #000;
   padding: 0 0.5rem;
-  margin: 0 8px;
-  height: 37px;
+  margin: 2px 8px;
+  height: 90%;
+}
+
+.component-list{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
 }

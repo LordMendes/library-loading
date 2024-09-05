@@ -53,7 +53,7 @@ function App() {
   }, []);
 
   const containerHeight = window.innerHeight - 250;
-  const containerWidth = window.innerWidth - 250;
+  const containerWidth = window.innerWidth - 200;
 
   return (
     <div className="App">
@@ -66,21 +66,21 @@ function App() {
         </div>
         <VirtualList
           items={Object.keys(filteredComponents)}
-          itemHeight={39}
+          itemHeight={50}
           containerHeight={containerHeight}
           overflow="y"
           renderItem={(category) => (
             <div className="row" key={category}>
               <button
                 className={`cell ${
-                  selectedCategory === category ? "selected" : ""
+                  selectedCategory === category && "selected"
                 }`}
                 onClick={() => setSelectedCategory(category)}
               >
                 {category} ({filteredComponents[category]?.length || 0})
               </button>
-              <div>
-                {selectedCategory === category && (
+              <div className="component-list">
+                {selectedCategory === category ? (
                   <VirtualList
                     items={filteredComponents[category]}
                     itemWidth={150}
@@ -88,7 +88,7 @@ function App() {
                     overflow="x"
                     renderItem={(item) => <ComponentItem key={item}>{item}</ComponentItem>}
                   />
-                )}
+                ):null}
               </div>
             </div>
           )}

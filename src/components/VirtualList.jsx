@@ -53,7 +53,7 @@ export const VirtualList = ({
     <div
       ref={containerRef}
       style={{
-        height: containerHeight,
+        height: isHorizontal ? "100%"  : containerHeight,
         width: containerWidth,
         overflowX: isHorizontal ? "auto" : "hidden",
         overflowY: isHorizontal ? "hidden" : "auto",
